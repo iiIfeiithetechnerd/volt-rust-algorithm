@@ -39,3 +39,26 @@ fn get_pi_model() -> Result<String, Box<dyn Error>> {
     let info = rppal::system::DeviceInfo::new()?;
     Ok(format!("{} ({})", info.model(), info.memory_size()))
 }
+
+/*// Hypothetical structure for hydropower
+loop {
+    let (raw_v, raw_i) = read_adc_channels(&spi, 0, 1)?; // Read Ch0 (Volts) & Ch1 (Amps)
+    
+    let voltage = convert_voltage(raw_v);
+    let current = convert_current(raw_i);
+    
+    // Core Hydropower Metric
+    let power_watts = voltage * current; 
+    
+    // Accumulate energy (simplified)
+    total_energy_wh += (power_watts * sampling_interval_hours);
+
+    println!("V: {:.2}V | I: {:.2}A | Power: {:.2}W | Energy: {:.4}Wh", 
+             voltage, current, power_watts, total_energy_wh);
+    
+    // AI/Algorithm Decision Point:
+    // If power drops suddenly -> Alert: "Blockage detected?"
+    // If voltage spikes -> Alert: "Load disconnected?"
+    
+    thread::sleep(Duration::from_millis(100));
+} */
