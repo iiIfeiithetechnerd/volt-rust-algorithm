@@ -22,9 +22,24 @@ class neural_network:
     def forward(self, X):
         self.X = X
 
-        self.Z1 = np.dot(X, self.W1) + self.b1
-        self.A1 = self.sigmoid(self.Z1)
+        self.Z1 = np.dot(X, self.weights_input_hidden) + self.bias_hidden
+        self.A1 = self.relu(self.Z1)
 
         self.Z2 = np.dot(self.A1, self.W2) + self.b2
         self.A2 = self.sigmoid(self.Z2)
         return self.A2
+
+    def backward(self, y):
+        m = y.shape[0]
+
+        # Calculate the error
+        self.error_output = self.A2 - y
+        self.error_hidden = np.dot(self.error_output, self.W2.T) * self.sigmoid_derivative(self.Z1)
+
+        # Update weights and biases
+        self.W2 -= (self.learning_rate / m) * np.dot(self.A1.T, self.error_output)
+        self.b2 -= (self.learning_rate / m) * np.sum(self.error_output, axis=0)
+
+        self.W1 -= (self.learning_rate / m) * np.dot(self.X.T, self.error_hidden)
+        self.b1 -= (self.learning_rate / m) * np.sum(self.error_hidden, axis=0)
+        
